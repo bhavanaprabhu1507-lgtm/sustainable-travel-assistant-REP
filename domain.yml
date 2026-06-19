@@ -1,0 +1,162 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+
+  - plan_trip
+  - inform
+
+  - ask_hotel_options
+  - ask_transport_options
+  - ask_carbon_footprint
+
+  - request_human_advisor
+
+entities:
+  - origin
+  - destination
+  - budget
+  - sustainability_level
+  - transport_mode
+
+slots:
+
+  origin:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: origin
+      - type: from_text
+        conditions:
+          - active_loop: trip_planning_form
+            requested_slot: origin
+
+  destination:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: destination
+      - type: from_text
+        conditions:
+          - active_loop: trip_planning_form
+            requested_slot: destination
+
+  start_date:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: trip_planning_form
+            requested_slot: start_date
+
+  end_date:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: trip_planning_form
+            requested_slot: end_date
+
+  budget:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: budget
+      - type: from_text
+        conditions:
+          - active_loop: trip_planning_form
+            requested_slot: budget
+
+  transport_mode:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: transport_mode
+      - type: from_text
+        conditions:
+          - active_loop: trip_planning_form
+            requested_slot: transport_mode
+
+  sustainability_level:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: sustainability_level
+      - type: from_text
+        conditions:
+          - active_loop: trip_planning_form
+            requested_slot: sustainability_level
+
+forms:
+
+  trip_planning_form:
+    required_slots:
+      - origin
+      - destination
+      - start_date
+      - end_date
+      - budget
+      - transport_mode
+      - sustainability_level
+
+responses:
+
+  utter_greet:
+    - text: "Hello! I am your Sustainable Tourism Planning Assistant. How can I help you today?"
+
+  utter_goodbye:
+    - text: "Thank you for choosing sustainable travel. Have a wonderful trip."
+
+  utter_trip_information_collected:
+    - text: "Great! I have collected all your travel preferences."
+
+  utter_fallback:
+    - text: "I'm sorry, I didn't understand that. Could you rephrase your request?"
+
+  utter_ask_trip_planning_form_origin:
+    - text: "Which city are you travelling from?"
+
+  utter_ask_trip_planning_form_destination:
+    - text: "Which destination would you like to visit?"
+
+  utter_ask_trip_planning_form_start_date:
+    - text: "What is your departure date?"
+
+  utter_ask_trip_planning_form_end_date:
+    - text: "What is your return date?"
+
+  utter_ask_trip_planning_form_budget:
+    - text: "What is your approximate travel budget?"
+
+  utter_ask_trip_planning_form_transport_mode:
+    - text: "How do you plan to travel? (Flight, Train, Bus, Car)"
+
+  utter_ask_trip_planning_form_sustainability_level:
+    - text: "How important is sustainability for this trip? (Low, Medium, High)"
+
+actions:
+  - validate_trip_planning_form
+
+  - action_generate_trip_summary
+
+  - action_recommend_hotels
+  - action_recommend_transport
+
+  - action_calculate_carbon_footprint
+  - action_rank_sustainable_options
+
+  - action_human_handover
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
