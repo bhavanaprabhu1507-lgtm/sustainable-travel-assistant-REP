@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+
+  rasa:
+    build: .
+    container_name: rasa_server
+
+    command: >
+      rasa run
+      --enable-api
+      --cors "*"
+      --credentials credentials.yml
+
+    ports:
+      - "5005:5005"
+
+    volumes:
+      - .:/app
+
+  actions:
+    build: .
+    container_name: action_server
+
+    command: >
+      rasa run actions
+
+    ports:
+      - "5055:5055"
+
+    volumes:
+      - .:/app
